@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  login    String  @unique
+  password String
+  name     String?
+  surname  String?
+  phone    String?
+  address  String?
+
+  createdAt DateTime @default(now())
+
+  orders Order[]
+  basket Basket[]
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Int
+  imgPath     String
+  description String
+  isTea       Boolean  @default(false)
+  isCoffee    Boolean  @default(false)
+  isBakery    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  basket         Basket[]
+  productToOrder ProductToOrder[]
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  createdAt DateTime @default(now())
+
+  name    String
+  surname String
+  phone   String
+  address String
+
+  price Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  productToOrder ProductToOrder[]
+}
+
+model ProductToOrder {
+  id Int @id @default(autoincrement())
+
+  productId Int
+  orderId   Int
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Basket {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  userId    Int
+  isDeleted Boolean @default(false)
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId], name: "UserIdToProductIdUnique")
+}
