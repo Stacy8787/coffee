@@ -15,7 +15,7 @@ if(cookieValue) {
 
 <template>
   <Navbar />
-  <div class="mb-5">
+  <div >
     <RouterView />
   </div>
 </template>

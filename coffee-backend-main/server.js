@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
-const port = 3000;
+const port = 3210;
 const service = new coffeeService();
 
 app.post('/login', async (req, res) => {
@@ -83,6 +83,11 @@ app.get('/profile', verifyToken, async (req, res) => {
 app.post('/detailed-product', verifyToken, async (req, res) => {
   const { productId } = req.body;
   const product = await service.getDetailedProduct(productId)
+  res.json(product);
+});
+
+app.get('/report', async (req, res) => {
+  const product = await service.getReport()
   res.json(product);
 });
 

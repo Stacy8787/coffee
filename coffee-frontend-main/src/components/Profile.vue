@@ -47,13 +47,13 @@ coffeeApi.get('profile').then((data) => {
       <div id="accordion">
         <div class="card" v-for="item in orders">
           <div class="card-header">
-            <a class="btn w-100" data-bs-toggle="collapse" href="#collapseOne">
+            <a class="btn w-100" data-bs-toggle="collapse" :href="'#collapse' + item.id">
               <div class="d-flex justify-content-between">
                 <div>Заказ #{{ item.id }}</div> <strong>{{ item.price }}₽</strong>
               </div>
             </a>
           </div>
-          <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+          <div :id="'collapse' + item.id" class="collapse" data-bs-parent="#accordion">
             <div class="card-body">
               <ul>
                 <li v-for="product in item.productToOrder">

@@ -64,7 +64,6 @@ watch(sortType, (newValue, oldValue) => {
 });
 
 function reset() {
-  console.log(products);
   sortPrice.value = '0';
   sortType.value = '0';
   searchInput.value = '';

@@ -235,6 +235,52 @@ export class coffeeService {
     return { user, order };
   }
 
+  async getReport() {
+    const users = await this.prisma.user.findMany({
+      select: {
+        id: true,
+        login: true,
+        createdAt: true,
+      },
+    });
+
+    const orders = await this.prisma.order.findMany({
+      include: {
+        productToOrder: {
+          select: {
+            product: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        user: {
+          select: {
+            login: true,
+          },
+        },
+      },
+    });
+
+    let products = await this.prisma.productToOrder.groupBy({
+      by: ['productId'],
+      _count: true,
+    });
+
+    products = products.sort((a, b) => b._count - a._count)[0];
+
+    const popularProduct = await this.prisma.product.findUnique({
+      where: {
+        id: products.productId
+      }
+    });
+
+    popularProduct.countSales = products._count
+
+    return { users, orders, popularProduct };
+  }
+
   generateToken(login, userId) {
     return jwt.sign({ login, userId }, process.env.SECRET, { expiresIn: '7d' });
   }

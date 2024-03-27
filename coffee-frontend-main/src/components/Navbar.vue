@@ -19,7 +19,7 @@ function logout() {
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse">
+      <div class="collapse navbar-collapse" id="mynavbar">
         <ul class="navbar-nav me-auto">
           <li class="nav-item" v-if="store.isAuth">
             <router-link class="nav-link" to="/catalog">Каталог товаров</router-link>
@@ -29,6 +29,9 @@ function logout() {
           </li>
           <li class="nav-item" v-if="store.isAuth">
             <router-link class="nav-link" to="/profile">Личный кабинет</router-link>
+          </li>
+          <li class="nav-item" v-if="store.isAuth">
+            <router-link class="nav-link" to="/report">Отчет</router-link>
           </li>
           <li class="nav-item" v-if="!store.isAuth">
             <router-link class="nav-link" to="/auth">Авторизация</router-link>
